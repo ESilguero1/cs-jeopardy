@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeopardy Question</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .question-container {
+    text-align: center;
+    width: 90%;
+    max-width: 70vw;
+    margin: auto;
+  }
+  .question-text {
+    font-size: 4em; /* Adjust font size as needed */
+    margin-bottom: 20px;
+  }
+  .answer {
+    display: none;
+    font-size: 3em; /* Adjust font size as needed */
+  }
+  #return-btn-container {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+  }
+  #return-btn {
+    padding: 10px 20px;
+    font-size: 1.5em; /* Adjust font size as needed */
+    background-color: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  a {
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="question-container">
+  <h2 class="question-text">Jeopardy Question</h2>
+  <p id="question" class="question-text">{{question}}</p>
+  <p id="answer" class="answer">{{answer}}</p>
+  <div id="return-btn-container">
+    <a id="return-btn" href="/#">Return to Board</a>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function(event) {
+    if (event.code === 'Space') {
+      revealAnswer();
+    }
+  });
+
+  function revealAnswer() {
+    const answerElement = document.getElementById('answer');
+    answerElement.style.display = 'block';
+    document.getElementById('return-btn-container').style.display = 'block';
+  }
+
+</script>
+
+</body>
+</html>

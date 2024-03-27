@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Science Jeopardy</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+  }
+  .container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 90vw;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 40px;
+    text-align: center;
+  }
+  th {
+    background-color: #0077ff;
+    color: white;
+  }
+  td {
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+  td:hover {
+    background-color: #ddd;
+  }
+  .score-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .score {
+    margin: 0 10px;
+    text-align: center;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+    padding: 40px;
+  }
+  h1 {
+    font-size: 5em;
+  }
+  button-group {
+    flex: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<h1>Computer Science Jeopardy</h1>
+
+<div class="container">
+  <table>
+    <tr>
+      <th>Hardware</th>
+      <th>Languages</th>
+      <th>Frameworks</th>
+      <th>OOP</th>
+      <th>Mystery</th>
+    </tr>
+    <tr>
+      <td><a id="cell-1" href="{{url_for("question", category = "h", val = 1)}}" onclick="cellClicked(this)">$100</a></td>
+      <td><a id="cell-2" href="{{url_for("question", category = "l", val = 1)}}" onclick="cellClicked(this)">$100</a></td>      
+      <td><a id="cell-3" href="{{url_for("question", category = "f", val = 1)}}" onclick="cellClicked(this)">$100</a></td>
+      <td><a id="cell-4" href="{{url_for("question", category = "o", val = 1)}}" onclick="cellClicked(this)">$100</a></td>
+      <td><a id="cell-5" href="{{url_for("question", category = "m", val = 1)}}" onclick="cellClicked(this)">$100</a></td>    </tr>
+    <tr>
+      <td><a id="cell-6" href="{{url_for("question", category = "h", val = 2)}}" onclick="cellClicked(this)">$200</a></td>
+      <td><a id="cell-7" href="{{url_for("question", category = "l", val = 2)}}" onclick="cellClicked(this)">$200</a></td>
+      <td><a id="cell-8" href="{{url_for("question", category = "f", val = 2)}}" onclick="cellClicked(this)">$200</a></td>
+      <td><a id="cell-9" href="{{url_for("question", category = "o", val = 2)}}" onclick="cellClicked(this)">$200</a></td>
+      <td><a id="cell-10" href="{{url_for("question", category = "m", val = 2)}}" onclick="cellClicked(this)">$200</a></td>    </tr>
+    <tr>
+      <td><a id="cell-11" href="{{url_for("question", category = "h", val = 3)}}" onclick="cellClicked(this)">$300</a></td>
+      <td><a id="cell-12" href="{{url_for("question", category = "l", val = 3)}}" onclick="cellClicked(this)">$300</a></td>
+      <td><a id="cell-13" href="{{url_for("question", category = "f", val = 3)}}" onclick="cellClicked(this)">$300</a></td>
+      <td><a id="cell-14" href="{{url_for("question", category = "o", val = 3)}}" onclick="cellClicked(this)">$300</a></td>
+      <td><a id="cell-15" href="{{url_for("question", category = "m", val = 3)}}" onclick="cellClicked(this)">$300</a></td>    </tr>
+    <tr>
+      <td><a id="cell-16" href="{{url_for("question", category = "h", val = 4)}}" onclick="cellClicked(this)">$400</a></td>
+      <td><a id="cell-17" href="{{url_for("question", category = "l", val = 4)}}" onclick="cellClicked(this)">$400</a></td>
+      <td><a id="cell-18" href="{{url_for("question", category = "f", val = 4)}}" onclick="cellClicked(this)">$400</a></td>
+      <td><a id="cell-19" href="{{url_for("question", category = "o", val = 4)}}" onclick="cellClicked(this)">$400</a></td>
+      <td><a id="cell-20" href="{{url_for("question", category = "m", val = 4)}}" onclick="cellClicked(this)">$400</a></td>
+    </tr>
+    <tr>
+      <td><a id="cell-21" href="{{url_for("question", category = "h", val = 5)}}" onclick="cellClicked(this)">$500</a></td>
+      <td><a id="cell-22" href="{{url_for("question", category = "l", val = 5)}}" onclick="cellClicked(this)">$500</a></td>
+      <td><a id="cell-23" href="{{url_for("question", category = "f", val = 5)}}" onclick="cellClicked(this)">$500</a></td>
+      <td><a id="cell-24" href="{{url_for("question", category = "o", val = 5)}}" onclick="cellClicked(this)">$500</a></td>
+      <td><a id="cell-25" href="{{url_for("question", category = "m", val = 5)}}" onclick="cellClicked(this)">$500</a></td>
+    </tr>
+  </table>
+</div>
+
+<div class="score-container" id="score-container">
+  
+</div>
+
+<div class="button-group">
+  <button onclick="addTeam()">Add Team</button>
+  <button id="reset-btn" onclick="resetBoard()">Reset Board</button>
+</div>
+
+<script>
+  let teamCount = 0;
+
+  function addTeam() {
+    teamCount++;
+    const scoreContainer = document.getElementById('score-container');
+    const teamName = prompt('Enter team name:');
+    if (!teamName) return; // Exit if user cancels or leaves input empty
+    const teams = JSON.parse(localStorage.getItem('teams')) || [];
+    teams.push(teamName);
+    localStorage.setItem('teams', JSON.stringify(teams));
+    addTeamInput(teamName);
+  }
+
+  function addTeamInput(teamName) {
+    const scoreContainer = document.getElementById('score-container');
+    const teamDiv = document.createElement('div');
+    teamDiv.classList.add('score');
+    teamDiv.innerHTML = `
+      <div>
+        <h3>${teamName} Score:</h3>
+        <button onclick="incrementScore('${teamName}')">+ $100</button>
+        <button onclick="decrementScore('${teamName}')">- $100</button>
+        <p id="team-${teamName}-score">${localStorage.getItem(`team-${teamName}-score`) || 0}</p>
+      </div>
+    `;
+    scoreContainer.appendChild(teamDiv);
+  }
+
+  function incrementScore(teamName) {
+    const teamScoreElement = document.getElementById(`team-${teamName}-score`);
+    let score = parseInt(teamScoreElement.innerText);
+    score += 100;
+    teamScoreElement.innerText = score;
+    localStorage.setItem(`team-${teamName}-score`, score);
+  }
+
+  function decrementScore(teamName) {
+    const teamScoreElement = document.getElementById(`team-${teamName}-score`);
+    let score = parseInt(teamScoreElement.innerText);
+    score -= 100;
+    score = Math.max(0, score); // Ensure score doesn't go negative
+    teamScoreElement.innerText = score;
+    localStorage.setItem(`team-${teamName}-score`, score);
+  }
+
+  window.onload = function() {
+    for (let i = 1; i <= 25; i++) {
+      const cell = document.getElementById('cell-' + i);
+      const cellState = localStorage.getItem('cell-' + i);
+      if (cellState === 'clicked') {
+        cell.textContent = '';
+        cell.onclick = null;
+      }
+    }
+    const teams = JSON.parse(localStorage.getItem('teams')) || [];
+    teams.forEach(team => addTeamInput(team));
+  }
+
+  function cellClicked(cell) {
+    cell.textContent = ''; // Make the text of the clicked cell empty
+    cell.onclick = null; // Remove the click event listener to prevent further clicks
+    const cellId = cell.id;
+    localStorage.setItem(cellId, 'clicked'); // Store the state of the clicked cell in local storage
+  }
+
+  function resetBoard() {
+    for (let i = 1; i <= 25; i++) {
+      const cell = document.getElementById('cell-' + i);
+      if (i < 6){
+        num = 100;
+      }
+      else if (i < 11){
+        num = 200;
+      }
+      else if (i < 16) {
+        num = 300;
+      }
+      else if (i < 21) {
+        num = 400;
+      }
+      else {
+        num = 500;
+      }
+      cell.textContent = "$" + num; // Reset the cell text
+      cell.onclick = function() { cellClicked(this); }; // Restore the click event listener
+      localStorage.removeItem('cell-' + i); // Remove the cell state from local storage
+    }
+    localStorage.removeItem('teams');
+    const scoreContainer = document.getElementById('score-container');
+    scoreContainer.innerHTML = ''; // Clear team scores displayed on the page
+  }
+
+</script>
+
+</body>
+</html>
